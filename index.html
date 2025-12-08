@@ -41,15 +41,22 @@ body::before{
   z-index:-1;
 }
 
-/* --- LAYOUT --- */
+/* --- LAYOUT (РЕАЛНО ПРОЗРАЧЕН) --- */
 .wrap{
   max-width:420px;
   margin:6vh auto;
   padding:32px 26px;
   border-radius:22px;
-  background: rgba(10,18,30,.55);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 30px 120px rgba(0,0,0,.55);
+
+  /* ⛔ махнат фон и blur */
+  background: transparent;
+
+  /* ✅ само контур и дълбочина */
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.02),
+    0 30px 120px rgba(0,0,0,.6);
+
   transition: box-shadow .35s ease;
 }
 
@@ -86,23 +93,23 @@ select option{
   color:#000;
 }
 
-/* БЮДЖЕТ = СЪЩИЯ СТИЛ */
-select{
-  font-size:15px;
-  color:var(--text-main);
-}
-
 /* --- BUDGET GLOW --- */
 .wrap[data-budget="normal"]{
-  box-shadow:0 0 0 1px rgba(120,200,255,.35), 0 30px 100px rgba(0,0,0,.6);
+  box-shadow:
+    0 0 0 1px rgba(120,200,255,.35),
+    0 30px 100px rgba(0,0,0,.6);
 }
 
 .wrap[data-budget="medium"]{
-  box-shadow:0 0 0 1px rgba(80,220,200,.45), 0 30px 100px rgba(0,0,0,.6);
+  box-shadow:
+    0 0 0 1px rgba(80,220,200,.45),
+    0 30px 100px rgba(0,0,0,.6);
 }
 
 .wrap[data-budget="luxury"]{
-  box-shadow:0 0 0 1px rgba(255,215,120,.55), 0 30px 120px rgba(0,0,0,.7);
+  box-shadow:
+    0 0 0 1px rgba(255,215,120,.55),
+    0 30px 120px rgba(0,0,0,.7);
 }
 
 /* --- BUTTONS --- */
@@ -175,7 +182,10 @@ button.ready{
   <button id="sendBtn">Изпрати заявка</button>
   <button class="secondary">Изпрати по имейл</button>
 
-  <div class="privacy-note">🔒 Данните се използват само за това запитване.</div>
+  <div class="privacy-note">
+    🔒 Данните се използват само за това запитване.
+  </div>
+
   <div class="footer">AYA • Private AI Travel Design</div>
 
 </div>
