@@ -2,24 +2,15 @@
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
-  <title>AYA Hub – Твоят нежен travel hub</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="AYA Hub – AI travel помощник за персонализирани пътувания и VIP планове." />
+  <title>AYA Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
     :root {
-      --bg-main: #030611;
-      --turquoise: #35f0d0;
-      --turquoise-soft: rgba(53, 240, 208, 0.25);
-      --gold: #f4d58d;
-      --card-bg: rgba(3, 8, 24, 0.75);
-      --glass-bg: rgba(8, 20, 48, 0.85);
-      --text-main: #f8fbff;
-      --text-soft: #c0c7dd;
-      --accent-danger: #ff6b81;
-      --border-glass: rgba(255, 255, 255, 0.25);
-      --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.6);
-      --radius-2xl: 26px;
+      --text-main: #eafaf7;
+      --glass-bg: rgba(10, 25, 30, 0.55);
+      --glass-border: rgba(110, 255, 230, 0.18);
+      --accent: #35f0d0;
     }
 
     * {
@@ -29,616 +20,164 @@
     }
 
     body {
-      min-height: 100vh;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text-main);
-      background: radial-gradient(circle at top left, #16324a, #030611 55%, #000000 100%);
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, #16324a, #030611 55%, #000 100%);
       overflow-x: hidden;
       position: relative;
     }
 
-    /* 50/50 FACE BACKGROUND – леко прозрачен */
+    /* ======================================================
+       50/50 FACE BACKGROUND — дискретно, живо
+       ====================================================== */
     body::before {
       content: "";
       position: fixed;
       inset: -10%;
       background-image:
-        radial-gradient(circle at 15% 20%, rgba(53, 240, 208, 0.18), transparent 60%),
-        radial-gradient(circle at 90% 80%, rgba(244, 213, 141, 0.25), transparent 55%),
-        url("img/aya-face-5050.png"); /* <-- ТУК слагаш 50/50 лице (човек/AI) */
-      background-position: center right;
-      background-size: cover;
+        radial-gradient(circle at 18% 25%, rgba(53, 240, 208, 0.18), transparent 60%),
+        radial-gradient(circle at 85% 78%, rgba(130, 200, 255, 0.12), transparent 55%),
+        url("img/aya-face-5050.png");
       background-repeat: no-repeat;
-      opacity: 0.17;
-      filter: saturate(1.1) contrast(1.02) blur(1px);
+      background-position: center right;
+      background-size: contain;
+      opacity: 0.32;
       pointer-events: none;
-      z-index: -2;
+      z-index: 0;
+      animation: slowDrift 48s ease-in-out infinite;
     }
 
-    /* Тъмен overlay за по-добра четимост */
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at top left, transparent, rgba(0, 0, 0, 0.65));
-      z-index: -1;
+    @keyframes slowDrift {
+      0%   { transform: scale(1.02) translate(0, 0); }
+      50%  { transform: scale(1.05) translate(-12px, -8px); }
+      100% { transform: scale(1.02) translate(0, 0); }
     }
 
-    .page-wrap {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 32px 18px 40px;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 32px;
-      gap: 16px;
-    }
-
-    .logo-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-orb {
-      width: 36px;
-      height: 36px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, #eaffff, #35f0d0 40%, #0b1f33 100%);
-      box-shadow:
-        0 0 14px rgba(53, 240, 208, 0.7),
-        0 0 40px rgba(8, 238, 200, 0.45);
-    }
-
-    .logo-text-main {
-      letter-spacing: 0.18em;
-      font-size: 0.86rem;
-      text-transform: uppercase;
-      color: var(--text-soft);
-    }
-
-    .logo-text-sub {
-      font-size: 0.8rem;
-      color: rgba(192, 199, 221, 0.8);
-    }
-
-    .contact-mini {
-      text-align: right;
-      font-size: 0.78rem;
-      color: var(--text-soft);
-      line-height: 1.4;
-    }
-
-    .contact-mini a {
-      color: var(--turquoise);
-      text-decoration: none;
-    }
-
-    /* MAIN GRID */
-
-    .grid {
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2.6fr);
-      gap: 26px;
-      align-items: stretch;
-    }
-
-    @media (max-width: 880px) {
-      .grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .page-wrap {
-        padding-inline: 16px;
-      }
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .contact-mini {
-        text-align: left;
-      }
-    }
-
-    /* LEFT: HUB CARD */
-
-    .hub-card {
+    /* ======================================================
+       APP CONTAINER
+       ====================================================== */
+    .app {
       position: relative;
-      border-radius: var(--radius-2xl);
-      padding: 26px 22px 24px;
-      background: linear-gradient(
-          135deg,
-          rgba(7, 20, 38, 0.95),
-          rgba(12, 34, 66, 0.88)
-        );
-      border: 1px solid rgba(191, 236, 255, 0.16);
-      box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      overflow: hidden;
-    }
-
-    .hub-card::before {
-      content: "";
-      position: absolute;
-      inset: -60%;
-      background-image:
-        radial-gradient(circle at 10% 10%, rgba(53, 240, 208, 0.35), transparent 55%),
-        radial-gradient(circle at 90% 85%, rgba(244, 213, 141, 0.25), transparent 55%);
-      opacity: 0.65;
-      mix-blend-mode: screen;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    .hub-chip {
-      display: inline-flex;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 5px 11px;
-      border-radius: 999px;
-      background: rgba(3, 9, 24, 0.85);
-      border: 1px solid rgba(196, 241, 255, 0.35);
-      box-shadow: 0 0 18px rgba(53, 240, 208, 0.4);
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--turquoise);
-      margin-bottom: 14px;
+      justify-content: center;
+      padding: 32px;
     }
 
-    .hub-chip-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: var(--turquoise);
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 22px;
+      padding: 26px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.55),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.03);
     }
 
     h1 {
-      font-family: "Cinzel", "Times New Roman", serif;
-      font-size: clamp(1.9rem, 2.3rem, 2.4rem);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      font-size: 1.9rem;
+      font-weight: 600;
       margin-bottom: 8px;
+      color: #ffffff;
     }
 
     .subtitle {
-      font-size: 0.9rem;
-      color: var(--text-soft);
-      margin-bottom: 16px;
-      max-width: 26rem;
+      font-size: 0.95rem;
+      opacity: 0.78;
+      margin-bottom: 22px;
     }
 
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 5px 10px;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      background: rgba(13, 35, 68, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      margin-bottom: 16px;
-      color: var(--text-soft);
+    .section {
+      margin-bottom: 18px;
     }
 
-    .status-pill span.dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #37ff9e;
-      box-shadow: 0 0 10px rgba(55, 255, 158, 0.8);
-    }
-
-    /* примерен полет */
-
-    .section-label {
-      font-size: 0.75rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(192, 199, 221, 0.74);
-      margin-bottom: 8px;
-    }
-
-    .flight-card {
-      background: rgba(7, 19, 42, 0.95);
-      border-radius: 18px;
-      padding: 12px 13px 11px;
-      border: 1px solid var(--border-glass);
-      margin-bottom: 16px;
-    }
-
-    .flight-main {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .label {
+      font-size: 0.8rem;
+      opacity: 0.7;
       margin-bottom: 6px;
-      font-size: 0.87rem;
     }
 
-    .flight-main strong {
-      font-weight: 600;
-    }
-
-    .flight-main span.route {
-      color: var(--text-soft);
-      font-size: 0.84rem;
-    }
-
-    .flight-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px 14px;
-      font-size: 0.75rem;
-      color: var(--text-soft);
-      margin-top: 2px;
-    }
-
-    .status-row {
-      margin-top: 4px;
-      font-size: 0.8rem;
-      color: var(--accent-danger);
-    }
-
-    /* FORM */
-
-    .hub-form {
-      margin-top: 12px;
-      padding: 13px 13px 12px;
-      border-radius: 20px;
-      background: rgba(4, 11, 30, 0.95);
-      border: 1px solid rgba(191, 236, 255, 0.2);
-    }
-
-    .form-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-
-    .field {
-      flex: 1 1 140px;
-      min-width: 0;
-    }
-
-    label {
-      display: block;
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-bottom: 4px;
-      color: rgba(192, 199, 221, 0.9);
-    }
-
-    input,
-    textarea {
+    input {
       width: 100%;
-      padding: 7px 9px;
-      border-radius: 11px;
-      border: 1px solid rgba(134, 178, 209, 0.55);
-      background: rgba(3, 10, 27, 0.92);
-      color: var(--text-main);
-      font-size: 0.83rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 12px 14px;
+      color: #fff;
       outline: none;
+      font-size: 0.95rem;
     }
 
-    input::placeholder,
-    textarea::placeholder {
-      color: rgba(192, 199, 221, 0.7);
-      font-size: 0.8rem;
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.45);
     }
 
-    textarea {
-      resize: vertical;
-      min-height: 56px;
-    }
-
-    .hub-form-footer {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 10px;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .btn-main {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 9px 18px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      background: radial-gradient(circle at 20% 0%, #eaffff, #35f0d0 40%, #0b1f33 100%);
-      color: #032428;
-      font-weight: 600;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      box-shadow:
-        0 0 20px rgba(53, 240, 208, 0.7),
-        0 18px 40px rgba(0, 0, 0, 0.9);
-      text-decoration: none;
-    }
-
-    .btn-main span.icon {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: rgba(3, 36, 40, 0.18);
-      box-shadow: inset 0 0 0 1px rgba(2, 46, 52, 0.55);
-    }
-
-    .hint {
-      font-size: 0.74rem;
-      color: var(--text-soft);
-      max-width: 15rem;
-    }
-
-    /* RIGHT: ПАКЕТИ 20/40/60 */
-
-    .plans-card {
-      border-radius: var(--radius-2xl);
-      padding: 22px 20px 20px;
-      background: var(--glass-bg);
-      border: 1px solid rgba(244, 213, 141, 0.55);
-      box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .plans-card::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background:
-        radial-gradient(circle at 10% 0%, rgba(244, 213, 141, 0.3), transparent 60%),
-        radial-gradient(circle at 90% 100%, rgba(53, 240, 208, 0.18), transparent 55%);
-      opacity: 0.6;
-      mix-blend-mode: screen;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    .plans-title {
-      font-family: "Cinzel", "Times New Roman", serif;
-      font-size: 1.1rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-
-    .plans-sub {
-      font-size: 0.82rem;
-      color: var(--text-soft);
-      margin-bottom: 14px;
-      max-width: 18rem;
-    }
-
-    .plan-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .plan-item {
+    .btn {
+      margin-top: 18px;
+      width: 100%;
+      padding: 14px;
       border-radius: 16px;
-      padding: 10px 11px 9px;
-      background: rgba(6, 14, 34, 0.96);
-      border: 1px solid rgba(244, 213, 141, 0.4);
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 4px 10px;
-      align-items: center;
-      font-size: 0.83rem;
-    }
-
-    .plan-name {
+      border: none;
+      background: linear-gradient(135deg, #35f0d0, #2bb8ff);
+      color: #00211d;
       font-weight: 600;
-      color: var(--gold);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .plan-price {
-      font-weight: 700;
-      color: var(--turquoise);
       font-size: 1rem;
+      cursor: pointer;
     }
 
-    .plan-desc {
-      grid-column: 1 / -1;
-      font-size: 0.78rem;
-      color: var(--text-soft);
+    .btn:hover {
+      filter: brightness(1.05);
     }
 
-    .note {
-      font-size: 0.76rem;
-      color: rgba(192, 199, 221, 0.86);
-      margin-bottom: 10px;
-    }
-
-    .contact-block {
-      font-size: 0.78rem;
-      line-height: 1.5;
-    }
-
-    .contact-block a {
-      color: var(--turquoise);
-      text-decoration: none;
-    }
-
-    footer {
-      margin-top: 26px;
-      font-size: 0.72rem;
-      color: rgba(144, 155, 189, 0.85);
+    .footer-note {
+      margin-top: 14px;
+      font-size: 0.75rem;
+      opacity: 0.55;
       text-align: center;
     }
+
   </style>
 </head>
+
 <body>
-  <div class="page-wrap">
-    <header>
-      <div class="logo-wrap">
-        <div class="logo-orb"></div>
-        <div>
-          <div class="logo-text-main">AYA HUB</div>
-          <div class="logo-text-sub">Neural travel companion</div>
-        </div>
+
+  <div class="app">
+    <div class="card">
+      <h1>AYA Hub</h1>
+      <div class="subtitle">
+        Твоят нежен AI travel concierge
       </div>
-      <div class="contact-mini">
-        WhatsApp: <a href="https://wa.me/359894842882" target="_blank">+359 894 842 882</a><br />
-        E-mail: <a href="mailto:aya.smart.store@gmail.com">aya.smart.store@gmail.com</a>
+
+      <div class="section">
+        <div class="label">Дестинация</div>
+        <input placeholder="Paros, Maldives, Dubai..." />
       </div>
-    </header>
 
-    <main class="grid">
-      <!-- LEFT: HUB + ФОРМА -->
-      <section class="hub-card">
-        <div class="hub-chip">
-          <span class="hub-chip-dot"></span>
-          <span>Personal AI travel hub</span>
-        </div>
+      <div class="section">
+        <div class="label">Дати</div>
+        <input placeholder="напр. 5 – 10 март" />
+      </div>
 
-        <h1>AYA Hub</h1>
-        <p class="subtitle">
-          Запази заявка за пътуване, без да ровиш в десетки сайтове. AYA събира идеите ти и ги превръща в конкретен план.
-        </p>
+      <div class="section">
+        <div class="label">Стил</div>
+        <input placeholder="романтика, море, вино…" />
+      </div>
 
-        <div class="status-pill">
-          <span class="dot"></span>
-          <span>Отговор до 24 часа • Безплатно първоначално предложение</span>
-        </div>
+      <button class="btn">Запази пътуване</button>
 
-        <div class="section-label">Днешен примерен полет</div>
-        <div class="flight-card">
-          <div class="flight-main">
-            <strong>W6 4361 · София → Бари</strong>
-            <span class="route">Планиран: 06:00 • Обновен: 09:00</span>
-          </div>
-          <div class="flight-meta">
-            <span>Статус: <span style="color: var(--accent-danger);">Delayed (пример)</span></span>
-            <span>Клас: Economy</span>
-          </div>
-        </div>
-
-        <div class="section-label">Моето следващо пътуване</div>
-        <form
-          class="hub-form"
-          action="https://wa.me/359894842882"
-          method="get"
-          target="_blank"
-        >
-          <div class="form-row">
-            <div class="field">
-              <label for="destination">Дестинация</label>
-              <input
-                id="destination"
-                name="destination"
-                type="text"
-                placeholder="Малдиви, Дубай, Бали..."
-              />
-            </div>
-            <div class="field">
-              <label for="dates">Период</label>
-              <input
-                id="dates"
-                name="dates"
-                type="text"
-                placeholder="напр. 5–12 март 2026"
-              />
-            </div>
-          </div>
-
-          <div class="field" style="margin-bottom: 6px;">
-            <label for="people">Гости</label>
-            <input
-              id="people"
-              name="people"
-              type="text"
-              placeholder="напр. 2 възрастни + 2 деца"
-            />
-          </div>
-
-          <div class="field">
-            <label for="notes">Какво ти е важно?</label>
-            <textarea
-              id="notes"
-              name="notes"
-              placeholder="лукс, близо до плажа, спа, само директни полети..."
-            ></textarea>
-          </div>
-
-          <div class="hub-form-footer">
-            <button class="btn-main" type="submit">
-              <span class="icon"></span>
-              <span>Изпрати в WhatsApp</span>
-            </button>
-            <p class="hint">
-              Натискаш бутона → отваря се WhatsApp с готов текст. Ти само го потвърждаваш и изпращаш.
-            </p>
-          </div>
-        </form>
-      </section>
-
-      <!-- RIGHT: ПАКЕТИ -->
-      <aside class="plans-card">
-        <div class="plans-title">AYA Travel Plan</div>
-        <p class="plans-sub">
-          Екипът на AYA събира информация, филтрира вариантите и ти връща подреден план според бюджета и стила ти.
-        </p>
-
-        <div class="plan-list">
-          <div class="plan-item">
-            <div class="plan-name">Mini план</div>
-            <div class="plan-price">20 лв</div>
-            <div class="plan-desc">
-              Идея за маршрут, 2–3 примерни дестинации/хотела и ориентировъчни цени. Без линкове и резервации.
-            </div>
-          </div>
-
-          <div class="plan-item">
-            <div class="plan-name">Линкове &amp; детайли</div>
-            <div class="plan-price">40 лв</div>
-            <div class="plan-desc">
-              Пълен списък с подбрани линкове за полети и нощувки + кратко обяснение защо са избрани именно те.
-              Резервациите ги правиш ти.
-            </div>
-          </div>
-
-          <div class="plan-item">
-            <div class="plan-name">Full Care</div>
-            <div class="plan-price">60 лв</div>
-            <div class="plan-desc">
-              План + линкове + съдействие при самите резервации (онлайн, по телефон или чат), докато всичко е финализирано.
-            </div>
-          </div>
-        </div>
-
-        <p class="note">
-          Първоначалното предложение (какво можем да направим за теб) е безплатно. Плащаш само ако решиш да работим по конкретно пътуване.
-        </p>
-
-        <div class="contact-block">
-          📧 E-mail: <a href="mailto:aya.smart.store@gmail.com">aya.smart.store@gmail.com</a><br />
-          📱 WhatsApp: <a href="https://wa.me/359894842882" target="_blank">+359 894 842 882</a><br />
-          <span style="color: rgba(244,213,141,0.9);">AYA – AI travel design за истински хора.</span>
-        </div>
-      </aside>
-    </main>
-
-    <footer>
-      AYA Hub · Туркуаз + Noir Gold · Prototype v1.0
-    </footer>
+      <div class="footer-note">
+        AYA · AI Concierge · Ultra discreet
+      </div>
+    </div>
   </div>
+
 </body>
 </html>
