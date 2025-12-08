@@ -1,183 +1,170 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-  <meta charset="UTF-8" />
-  <title>AYA Hub</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
+<title>AYA Hub</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <style>
-    :root {
-      --text-main: #eafaf7;
-      --glass-bg: rgba(10, 25, 30, 0.55);
-      --glass-border: rgba(110, 255, 230, 0.18);
-      --accent: #35f0d0;
-    }
+<style>
+:root {
+  --text-main: #eafaf7;
+  --accent: #35f0d0;
+}
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--text-main);
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at top left, #16324a, #030611 55%, #000 100%);
-      overflow-x: hidden;
-      position: relative;
-    }
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--text-main);
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, #16324a, #030611 55%, #000 100%);
+  overflow-x: hidden;
+  position: relative;
+}
 
-    /* ======================================================
-       50/50 FACE BACKGROUND — дискретно, живо
-       ====================================================== */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: -10%;
-      background-image:
-        radial-gradient(circle at 18% 25%, rgba(53, 240, 208, 0.18), transparent 60%),
-        radial-gradient(circle at 85% 78%, rgba(130, 200, 255, 0.12), transparent 55%),
-        url("img/aya-face-5050.png");
-      background-repeat: no-repeat;
-      background-position: center right;
-      background-size: contain;
-      opacity: 0.32;
-      pointer-events: none;
-      z-index: 0;
-      animation: slowDrift 48s ease-in-out infinite;
-    }
+/* ===== 50/50 FACE BACKGROUND ===== */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -12%;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(53,240,208,.18), transparent 60%),
+    radial-gradient(circle at 85% 75%, rgba(130,200,255,.12), transparent 55%),
+    url("img/aya-face-5050.png");
+  background-repeat: no-repeat;
+  background-position: center right;
+  background-size: contain;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+  animation: drift 50s ease-in-out infinite;
+}
+@keyframes drift {
+  0%,100% { transform: scale(1.02); }
+  50% { transform: scale(1.05) translate(-10px,-8px); }
+}
 
-    @keyframes slowDrift {
-      0%   { transform: scale(1.02) translate(0, 0); }
-      50%  { transform: scale(1.05) translate(-12px, -8px); }
-      100% { transform: scale(1.02) translate(0, 0); }
-    }
+/* ===== LAYOUT ===== */
+.app {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
 
-    /* ======================================================
-       APP CONTAINER
-       ====================================================== */
-    .app {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 32px;
-    }
+.card {
+  width: 100%;
+  max-width: 430px;
+  border-radius: 22px;
+  padding: 26px;
+  background: rgba(5,15,20,0.35); /* почти прозрачна */
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.05);
+}
 
-    .card {
-      width: 100%;
-      max-width: 420px;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 22px;
-      padding: 26px;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.55),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.03);
-    }
+/* ===== TEXT ===== */
+h1 {
+  font-size: 1.9rem;
+  margin-bottom: 6px;
+}
+.subtitle {
+  font-size: .95rem;
+  opacity: .75;
+  margin-bottom: 22px;
+}
 
-    h1 {
-      font-size: 1.9rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #ffffff;
-    }
+/* ===== FORM ===== */
+.section { margin-bottom: 16px; }
 
-    .subtitle {
-      font-size: 0.95rem;
-      opacity: 0.78;
-      margin-bottom: 22px;
-    }
+.label {
+  font-size: .75rem;
+  opacity: .7;
+  margin-bottom: 6px;
+}
 
-    .section {
-      margin-bottom: 18px;
-    }
+input, select {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  padding: 10px 6px;
+  color: #fff;
+  font-size: .95rem;
+  outline: none;
+}
 
-    .label {
-      font-size: 0.8rem;
-      opacity: 0.7;
-      margin-bottom: 6px;
-    }
+select option {
+  background: #08121a;
+  color: #fff;
+}
 
-    input {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      padding: 12px 14px;
-      color: #fff;
-      outline: none;
-      font-size: 0.95rem;
-    }
+.btn {
+  margin-top: 22px;
+  width: 100%;
+  padding: 14px;
+  border-radius: 18px;
+  border: none;
+  background: linear-gradient(135deg, #35f0d0, #2bb8ff);
+  color: #00211d;
+  font-weight: 600;
+  cursor: pointer;
+}
 
-    input::placeholder {
-      color: rgba(255, 255, 255, 0.45);
-    }
-
-    .btn {
-      margin-top: 18px;
-      width: 100%;
-      padding: 14px;
-      border-radius: 16px;
-      border: none;
-      background: linear-gradient(135deg, #35f0d0, #2bb8ff);
-      color: #00211d;
-      font-weight: 600;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      filter: brightness(1.05);
-    }
-
-    .footer-note {
-      margin-top: 14px;
-      font-size: 0.75rem;
-      opacity: 0.55;
-      text-align: center;
-    }
-
-  </style>
+.footer-note {
+  margin-top: 14px;
+  font-size: .7rem;
+  opacity: .55;
+  text-align: center;
+}
+</style>
 </head>
 
 <body>
 
-  <div class="app">
-    <div class="card">
-      <h1>AYA Hub</h1>
-      <div class="subtitle">
-        Твоят нежен AI travel concierge
-      </div>
+<div class="app">
+  <div class="card">
 
-      <div class="section">
-        <div class="label">Дестинация</div>
-        <input placeholder="Paros, Maldives, Dubai..." />
-      </div>
-
-      <div class="section">
-        <div class="label">Дати</div>
-        <input placeholder="напр. 5 – 10 март" />
-      </div>
-
-      <div class="section">
-        <div class="label">Стил</div>
-        <input placeholder="романтика, море, вино…" />
-      </div>
-
-      <button class="btn">Запази пътуване</button>
-
-      <div class="footer-note">
-        AYA · AI Concierge · Ultra discreet
-      </div>
+    <h1>AYA Hub</h1>
+    <div class="subtitle">
+      Дискретен AI travel concierge
     </div>
+
+    <div class="section">
+      <div class="label">Дестинация</div>
+      <input placeholder="Paros, Maldives, Dubai…" />
+    </div>
+
+    <div class="section">
+      <div class="label">Дати</div>
+      <input placeholder="напр. 5 – 10 март" />
+    </div>
+
+    <div class="section">
+      <div class="label">Брой пътуващи</div>
+      <input type="number" min="1" placeholder="напр. 2" />
+    </div>
+
+    <div class="section">
+      <div class="label">Стил</div>
+      <select>
+        <option disabled selected>Избери стил</option>
+        <option>Comfort — нормален</option>
+        <option>Select — среден</option>
+        <option>Signature — лукс</option>
+      </select>
+    </div>
+
+    <button class="btn">Изпрати заявка</button>
+
+    <div class="footer-note">
+      AYA · Private AI Travel Design
+    </div>
+
   </div>
+</div>
 
 </body>
 </html>
